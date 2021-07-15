@@ -1,5 +1,6 @@
 # Shamelessly copied from http://flask.pocoo.org/docs/quickstart/
 import difflib as dl
+import os
 
 from flask import (Flask,jsonify,json,make_response,request)
 app = Flask(__name__)
@@ -9,10 +10,18 @@ class TextSimilarityResponse:
    def to_json(self):
        return jsonify({"score" : self.score })
 
-@app.route('/')
+@app.route('/',methods=['GET'])
 def text_similarity_score():
     text1 = request.args.get('text1')
     text2 = request.args.get('text2')
+    if text1 == None or text2 == None:
+        response = make_response(
+        "No valid text1 and text2 value were found in query params",
+        403,
+        )
+        return response;        
+    
+
     score = dl.SequenceMatcher(None,text1, text2).ratio()    
     text_similarity_score = TextSimilarityResponse(score*100)
     response = make_response(
@@ -23,5 +32,6 @@ def text_similarity_score():
     return response
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
 
