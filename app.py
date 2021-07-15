@@ -5,10 +5,10 @@ import os
 from flask import (Flask,jsonify,json,make_response,request,render_template)
 app = Flask(__name__)
 class TextSimilarityResponse:   
-   def __init__(self, score):
-      self.score = score
+   def __init__(self, similarity):
+      self.similarity = similarity
    def to_json(self):
-       return jsonify({"score" : self.score })
+       return jsonify({"similarity" : self.similarity })
 
 @app.route('/')
 def index():
