@@ -2,7 +2,7 @@
 import difflib as dl
 import os
 
-from flask import (Flask,jsonify,json,make_response,request)
+from flask import (Flask,jsonify,json,make_response,request,render_template)
 app = Flask(__name__)
 class TextSimilarityResponse:   
    def __init__(self, score):
@@ -10,7 +10,13 @@ class TextSimilarityResponse:
    def to_json(self):
        return jsonify({"score" : self.score })
 
-@app.route('/',methods=['GET'])
+@app.route('/')
+def index():
+    """ Displays the index page accessible at '/'
+    """
+    return render_template('index.html')
+
+@app.route('/text/similarity',methods=['GET'])
 def text_similarity_score():
     text1 = request.args.get('text1')
     text2 = request.args.get('text2')
