@@ -9,4 +9,4 @@ install:
   pip install -r requirements.txt
 
 script:
-  - pytest app.py & flake8
+  - pytest app.py
