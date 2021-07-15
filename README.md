@@ -1,5 +1,5 @@
 # epx-text-service
-Text similarity NLP score
+Text similarity NLP score [![Build Status](https://travis-ci.com/ranraj/epx-text-service.svg?branch=master)](https://travis-ci.com/ranraj/epx-text-service)
 
 Local docker 
 ```
