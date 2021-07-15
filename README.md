@@ -1,5 +1,6 @@
 # epx-text-service
 Text similarity NLP score
+
 Local docker 
 ```
 docker image build -t epx-text .
