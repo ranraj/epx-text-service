@@ -1,6 +1,7 @@
 # Shamelessly copied from http://flask.pocoo.org/docs/quickstart/
 import difflib as dl
 import os
+import pytest
 
 from flask import (Flask,jsonify,json,make_response,request,render_template)
 app = Flask(__name__)
@@ -15,6 +16,8 @@ def index():
     """ Displays the index page accessible at '/'
     """
     return render_template('index.html')
+def text_similarity(text1,text2):
+    return (dl.SequenceMatcher(None,text1, text2).ratio() * 100)
 
 @app.route('/text/similarity',methods=['GET'])
 def text_similarity_score():
@@ -27,9 +30,8 @@ def text_similarity_score():
         )
         return response;        
     
-
-    score = dl.SequenceMatcher(None,text1, text2).ratio()    
-    text_similarity_score = TextSimilarityResponse(score*100)
+    score = text_similarity(text1, text2)
+    text_similarity_score = TextSimilarityResponse(score)
     response = make_response(
         text_similarity_score.to_json(),
         200,        
@@ -41,3 +43,9 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
 
+
+
+def test_text_similarity():
+	text1="New Delhi"
+	text2="Delhi"
+	assert text_similarity(text1, text2) > 71.0,"test failed"
