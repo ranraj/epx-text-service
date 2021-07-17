@@ -2,13 +2,16 @@ language: python
 python:
 - '3.6'
 services: docker
-install: pip install -r requirements.txt
+install: 
+- pip install -r requirements.txt
+- pip install heroku
+
 script:
 - pytest app.py
-deploy:
-  provider: heroku
-  api_key: "$HEROKU_API_KEY"
-  app: epx-text
+- heroku container:login
+- heroku container:push web --app epx-text
+- heroku container:release web --app epx-text
+
 env:
   global:
     secure: JbzOhMbrf3IS17VeDejDUQagIl30N2k3sbLHROXQQ4Dnw4DE7yQeNy/46h9quqyscf2pjNQxxZY7/7cTlLL49hqyVQSIU+6/Xtv7VYRKO+hOekQ7Jt6ET06WgI/upWmdb5pyiAkWjVIqtkghy6+zCI9P2kNDwvlYB3wG4yfyhRaRIqsajqp94+Y/sAKLJ/sJQkkWtNWpkzZcQY5a8ijupXG9/bIXn2BVFmW/GjrnsA8xNImwkakvlMbdnH0sWfWWFsX1Zi06etBKNxWxECmQVLRkDLR/34NStdzBPzKdrBtMqnXm9edRjQMV7OQ7AdZl/j46nUEU+1j55azQZ6NfOACa0Bb7EekDvY4OHAEgy2s7R1oQudVcNFBJ5KjlllU/flR1HKz+4RDMS3hmDf4tVJk0M/DvQnGK8X5u0R7JAtCBJ2pKMyccOb5WcJm0wu1lPQpdhDLTw0H3jjELhwcdf2T1a3Gws/IFH8lku+A5XUggoYeMZN+IYsLKvs572iojtV7g/728fnUn9ZiG2SGHHQPc9Xi4H4olfqwOa84RMNqwflVwhKcJpaklQNQyCd32IVQCNpWNWbbxANsDmrOS2ZHPYnDDEZRcRXrZGf1YEV+U34N/wn4L2jVqYP6pKIs3xmzWVgrhIfqAtgjmk+I1rZ6rs0dMIzaN+fjAOgHMhVA=
