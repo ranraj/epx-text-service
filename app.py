@@ -2,9 +2,12 @@
 import difflib as dl
 import os
 import pytest
+import spacy
 
 from flask import (Flask,jsonify,json,make_response,request,render_template)
+
 app = Flask(__name__)
+nlp = spacy.load('en_core_web_md')
 class TextSimilarityResponse:   
    def __init__(self, similarity):
       self.similarity = similarity
@@ -17,7 +20,9 @@ def index():
     """
     return render_template('index.html')
 def text_similarity(text1,text2):
-    return (dl.SequenceMatcher(None,text1, text2).ratio())
+    token1 = nlp(text1)
+    token2 = nlp(text2)
+    return token1.similarity(token2)
 
 @app.route('/text/similarity',methods=['GET'])
 def text_similarity_score():
@@ -49,3 +54,5 @@ def test_text_similarity():
 	text1="New Delhi"
 	text2="Delhi"
 	assert text_similarity(text1, text2) > 0.71,"test failed"
+
+    
